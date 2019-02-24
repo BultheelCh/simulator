@@ -25,6 +25,7 @@ public class ProxyCameraService implements CameraService{
         //Json g = new Json( );
         //Camera camera = fo g.fromJson(result, Camera.class);
 
+        //test
 
 
     }
