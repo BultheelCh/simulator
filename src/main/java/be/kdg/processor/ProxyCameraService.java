@@ -20,7 +20,7 @@ public class ProxyCameraService implements CameraService{
     }
 
 
-    private void ConvertResultCameraService(String result){
+    /*private void ConvertResultCameraService(String result){
        // JsonReader
         //Json g = new Json( );
         //Camera camera = fo g.fromJson(result, Camera.class);
@@ -28,6 +28,6 @@ public class ProxyCameraService implements CameraService{
         //test
 
 
-    }
+    }*/
 
 }
