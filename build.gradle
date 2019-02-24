@@ -25,4 +25,10 @@ repositories {
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	compile 'com.rabbitmq:amqp-client:5.6.0'
+	compile("org.springframework.boot:spring-boot-starter-amqp")
+	compile group: 'javax.json', name: 'javax.json-api', version: '1.0'
+	compile group: 'org.glassfish', name: 'javax.json', version: '1.0.4'
+	compile files('lib/camera-service-1.0.jar', 'lib/license-plate-service-1.0.jar')
 }
+

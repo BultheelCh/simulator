@@ -1,0 +1,39 @@
+spring:
+  profiles.active: development
+
+---
+spring:
+  profiles: development
+rabbitmq:
+  host: localhost
+  port: 5672
+  username: guest
+  password: guest
+jsa:
+  rabbitmq:
+    exchange: jsa.direct
+    routingkey: jsa.routingkey
+    queue: jsa.queue
+
+export:
+    filename: "c:\\temp\\KDG\\SoftwareArchitecture\\input.csv"
+
+---
+spring:
+  profiles: production
+rabbitmq:
+  host: localhost
+  port: 5672
+  username: guest
+  password: guest
+jsa:
+  rabbitmq:
+    exchange: jsa.direct
+    routingkey: jsa.routingkey
+    queue: jsa.queue
+
+
+
+
+
+
