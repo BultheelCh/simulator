@@ -1,4 +1,4 @@
-package be.kdg.processor;
+package be.kdg.processor.Service;
 
 import be.kdg.sa.services.CameraServiceProxy;
 import org.springframework.stereotype.Component;
@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 import java.io.IOException;
 
 @Component
-public class ProxyCameraService implements CameraService{
+public class ProxyCameraService implements CameraService {
 
     @Override
     public String get(int cameraId) {

@@ -1,6 +1,6 @@
-package be.kdg.processor;
+package be.kdg.processor.model;
 
-public class Segment {
+public class WegSegment {
     private int  connectedCamera;
     private double distance;
     private double speedLimit;

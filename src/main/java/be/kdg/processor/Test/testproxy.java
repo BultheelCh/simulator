@@ -1,5 +1,6 @@
-package be.kdg.processor;
+package be.kdg.processor.Test;
 
+import be.kdg.processor.Service.ProxyCameraService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.Banner;
 import org.springframework.boot.CommandLineRunner;

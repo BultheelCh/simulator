@@ -1,10 +1,10 @@
-package be.kdg.processor;
+package be.kdg.processor.model;
 
 public class Camera {
     private int cameraId;
     private float breedtegraad;
     private float lengtegraad;
-    private Segment wegsegment;
+    private WegSegment wegsegment;
 
     //getters and setters
     public int getCameraId() {
@@ -25,10 +25,10 @@ public class Camera {
     public void setLengtegraad(float lengtegraad) {
         this.lengtegraad = lengtegraad;
     }
-    public Segment getWegsegment() {
+    public WegSegment getWegsegment() {
         return wegsegment;
     }
-    public void setWegsegment(Segment wegsegment) {
+    public void setWegsegment(WegSegment wegsegment) {
         this.wegsegment = wegsegment;
     }
 

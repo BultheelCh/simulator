@@ -30,5 +30,6 @@ dependencies {
 	compile group: 'javax.json', name: 'javax.json-api', version: '1.0'
 	compile group: 'org.glassfish', name: 'javax.json', version: '1.0.4'
 	compile files('lib/camera-service-1.0.jar', 'lib/license-plate-service-1.0.jar')
+	compile 'com.fasterxml.jackson.core:jackson-databind:2.2.3'
 }
 
