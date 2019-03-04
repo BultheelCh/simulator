@@ -2,7 +2,6 @@ package be.kdg.simulator.Input;
 
 import be.kdg.simulator.Output.OutputModusCameraBerichten;
 import be.kdg.simulator.model.CameraBericht;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Component;
 
 import java.sql.Timestamp;
@@ -10,7 +9,6 @@ import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 @Component
-@Configuration
 public class RandomModus implements InputModusCameraBerichten {
 
     private  final String LETTERS = "abcdefghijklmnopqrstuvwxyz";

@@ -1,11 +1,11 @@
 package be.kdg.simulator.Input;
 
+import be.kdg.simulator.AppProperties;
 import be.kdg.simulator.Output.OutputModusCameraBerichten;
 import be.kdg.simulator.model.CameraBericht;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 
 import java.io.BufferedReader;
@@ -16,6 +16,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.sql.Timestamp;
+import java.util.concurrent.TimeUnit;
 
 
 @Component
@@ -23,7 +24,7 @@ public class FileModus implements InputModusCameraBerichten {
     private static final Logger log = LoggerFactory.getLogger(FileModus.class);
 
     @Autowired
-    private Environment env;
+    AppProperties appProperties;
 
     @Override
     public CameraBericht CreateCameraBericht() {
@@ -34,7 +35,10 @@ public class FileModus implements InputModusCameraBerichten {
     public void CreateCameraBerichten(OutputModusCameraBerichten outputModusCameraBerichten, int delay) throws InterruptedException {
         try{
             //Path pathToFile = Paths.get(importfile);
-            Path pathToFile = Paths.get(env.getProperty("importfile.filename"));
+            System.out.println(appProperties.getImportfilename());
+           // System.out.println(env.getProperty("app.importfilename") );
+            //Path pathToFile = Paths.get(env.getProperty("app.importfilename"));
+            Path pathToFile = Paths.get(appProperties.getImportfilename());
             if (!Files.exists(pathToFile)){
                 throw new FileNotFoundException("Path naar bestand bestaat niet!");
             }
@@ -49,11 +53,12 @@ public class FileModus implements InputModusCameraBerichten {
                     String[] berichtVelden = line.split(",");
 
                     int id =Integer.parseInt( berichtVelden[0]);
-                    Timestamp timeStamp = Timestamp.valueOf( berichtVelden[1]);
-                    String license = berichtVelden[2];
+                    delay = Integer.valueOf( berichtVelden[2]);
+                    String license = berichtVelden[1];
 
-                    CameraBericht bericht = new CameraBericht(id, timeStamp ,license);
+                    CameraBericht bericht = new CameraBericht(id,   new Timestamp(System.currentTimeMillis()) ,license);
                     bericht.setCameraOutputModus(outputModusCameraBerichten);
+                    TimeUnit.SECONDS.sleep(delay/1000);
                     bericht.SendCameraBericht();
 
                     //lees de volgende lijn

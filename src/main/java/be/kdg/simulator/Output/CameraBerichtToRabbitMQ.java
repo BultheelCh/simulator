@@ -1,5 +1,6 @@
 package be.kdg.simulator.Output;
 
+import be.kdg.simulator.RabbitMqProperties;
 import be.kdg.simulator.model.CameraBericht;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -8,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 
-//@Service
 @Component
 public class CameraBerichtToRabbitMQ implements OutputModusCameraBerichten {
 
@@ -17,6 +17,9 @@ public class CameraBerichtToRabbitMQ implements OutputModusCameraBerichten {
 
     @Autowired
     private Environment env;
+    @Autowired
+    private RabbitMqProperties rabbitMqProperties;
+
 
     private final RabbitTemplate rabbitTemplate;
 
@@ -30,10 +33,12 @@ public class CameraBerichtToRabbitMQ implements OutputModusCameraBerichten {
     //=> bericht wordt verzonden om de 3 seconden.
     @Override
     public void SendTo(CameraBericht cameraBericht) {
-        rabbitTemplate.convertAndSend(env.getProperty("rabbitmq.exchangeName"), env.getProperty("rabbitmq.routingKey"), cameraBericht);
+        rabbitTemplate.convertAndSend(rabbitMqProperties.getExchangeName() , rabbitMqProperties.getRoutingKey() , cameraBericht);
         log.info("Camerabericht verzonden! (" + cameraBericht.toString() + ")");
     }
 
 
-
 }
+
+
+

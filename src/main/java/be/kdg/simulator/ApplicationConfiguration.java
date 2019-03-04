@@ -25,9 +25,9 @@ public class ApplicationConfiguration {
         System.out.println("Application Configuration loading");
     }
 
-/*    @Bean
+/*   @Bean
     public CameraBerichtToRabbitMQ getRabbitMQ(){
-        return new CameraBerichtToRabbitMQ();
+        return new CameraBerichtToRabbitMQ(new RabbitTemplate());
     }*/
 
     @Bean
@@ -39,6 +39,16 @@ public class ApplicationConfiguration {
     public RandomModus getRandomModus(){
         return new RandomModus();
     }
+
+  /*  @Bean AppProperties getAppProperties(){
+        return new AppProperties();
+    }
+
+    @Bean
+    public FileModus getFileModus(){
+        return new FileModus();
+    }
+*/
 
     @PreDestroy
     public void destroy(){
