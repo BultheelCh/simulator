@@ -36,47 +36,8 @@ public class SimulatorApplication implements CommandLineRunner {
 	@Autowired
 	private Environment env;
 
-/*	//Variabelen koppelen met Configuration file (application.properties)
-	@Value("${rabbitmq.exchangeName}")
-	public static String exchangeName;
-	@Value("${rabbitmq.queueName}")
-	private  String queueName;
-	@Value("${rabbitmq.routingKey}")
-	public static String routingKey;
-	@Value("${importPath}")
-	private  String fileName;
-	@Value("${simulator.delay}")
-	private  int delay;
-	@Value("${importfile.filename}")
-	public static  String importfile;*/
-
-/*	@Autowired
-	public SimulatorApplication(CameraBerichten cameraBerichten) {
-		this.cameraBerichten = cameraBerichten;
-	}*/
-
-
-/*
-	//getters and setters
-	public String getEchangeName() {
-		return exchangeName;
-	}
-	public String getQueueName() {
-		return queueName;
-	}
-	public String getRoutingKey() {
-		return routingKey;
-	}
-	public String getFileName() {
-		return fileName;
-	}
-*/
-
-
-
 	@Autowired
 	private CameraBerichtToRabbitMQ cameraBerichtToRabbitMQ;
-
 
 	public static void main(String[] args) throws InterruptedException {
 		//Wat gebeurt hier:
@@ -90,7 +51,7 @@ public class SimulatorApplication implements CommandLineRunner {
 
 		//Mogelijkheid 2:
 		SpringApplication app = new SpringApplication(SimulatorApplication.class);
-//		app.setBannerMode(Banner.Mode.OFF);
+		//app.setBannerMode(Banner.Mode.OFF );
 		app.run(args);
 	}
 
@@ -100,11 +61,10 @@ public class SimulatorApplication implements CommandLineRunner {
 
 		CameraBerichten cameraBerichten = factory.getBean(CameraBerichten.class);
 
-		//cameraBerichten.setDelay(delay);
-		//System.out.println(Integer.valueOf( env.getProperty("app.delay")));
 		cameraBerichten.setDelay(Integer.valueOf( env.getProperty("app.delay")));
 		cameraBerichten.setCameraInputModus(factory.getBean(RandomModus.class));
 		cameraBerichten.setOutputModusCameraBerichten(cameraBerichtToRabbitMQ); ;
+		//Foutmelding bij getBean door het rabbittemplate
 		//cameraBerichten.setOutputModusCameraBerichten(factory.getBean(CameraBerichtToRabbitMQ.class)); ;
 		cameraBerichten.CreateCameraBerichten();
 	}
