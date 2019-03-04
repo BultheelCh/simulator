@@ -1,4 +1,4 @@
-package be.kdg.simulator;
+package be.kdg.simulator.Configuration;
 
 import be.kdg.simulator.Input.RandomModus;
 import be.kdg.simulator.model.CameraBerichten;

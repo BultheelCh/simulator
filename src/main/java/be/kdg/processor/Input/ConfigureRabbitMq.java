@@ -1,4 +1,4 @@
-package be.kdg.simulator.Output;
+package be.kdg.processor.Input;
 
 import be.kdg.simulator.Configuration.RabbitMqProperties;
 import org.springframework.amqp.core.Binding;

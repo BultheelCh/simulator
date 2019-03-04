@@ -1,5 +1,7 @@
 package be.kdg.simulator;
 
+import be.kdg.simulator.Configuration.AppProperties;
+import be.kdg.simulator.Configuration.ApplicationConfiguration;
 import be.kdg.simulator.Input.FileModus;
 import be.kdg.simulator.Output.CameraBerichtToRabbitMQ;
 import be.kdg.simulator.model.CameraBerichten;

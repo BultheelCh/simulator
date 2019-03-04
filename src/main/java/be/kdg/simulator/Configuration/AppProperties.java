@@ -1,4 +1,4 @@
-package be.kdg.simulator;
+package be.kdg.simulator.Configuration;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;

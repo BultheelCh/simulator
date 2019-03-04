@@ -1,6 +1,6 @@
 package be.kdg.simulator.Input;
 
-import be.kdg.simulator.AppProperties;
+import be.kdg.simulator.Configuration.AppProperties;
 import be.kdg.simulator.Output.OutputModusCameraBerichten;
 import be.kdg.simulator.model.CameraBericht;
 import org.slf4j.Logger;

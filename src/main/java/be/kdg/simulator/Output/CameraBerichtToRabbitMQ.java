@@ -1,6 +1,6 @@
 package be.kdg.simulator.Output;
 
-import be.kdg.simulator.RabbitMqProperties;
+import be.kdg.simulator.Configuration.RabbitMqProperties;
 import be.kdg.simulator.model.CameraBericht;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
