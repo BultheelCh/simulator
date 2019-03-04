@@ -52,10 +52,6 @@ public class CameraBericht implements Serializable{
       }
 
     //Methods
-//    public CameraBericht CreateCameraBericht(){
-//        return cameraInputModus.CreateCameraBericht();
-//    }
-    //public void SendCameraBericht(CameraBericht cameraBericht){
     public void SendCameraBericht(){
         cameraOutputModus.SendTo(this);
     }

@@ -13,44 +13,53 @@ import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.Bean;
-import org.springframework.scheduling.annotation.EnableScheduling;
-
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.core.env.Environment;
 
 @SpringBootApplication
-@EnableScheduling
+@ComponentScan(basePackages = "be.kdg.simulator")
+//@Import({ApplicationConfiguration.class})
+//@EnableScheduling
 //@ComponentScan("be.kdg.simulator")
 //@ImportResource("classpath:/spring/spring-config.xml")
 public class SimulatorApplication implements CommandLineRunner {
 
 	private static final Logger log = LoggerFactory.getLogger(SimulatorApplication.class);
+	//private final CameraBerichten cameraBerichten;
 
-	//Constanten
-//	public static final String EXCHANGE_NAME="cameraberichten_tx";
-//	public static final String QUEUE ="default_parser_q";
-//	public static final String ROUTING_KEY = "cameraberichten";
-//	public static final String FILE_PATH = "c:\\temp\\KDG\\SoftwareArchitecture\\input.csv";
+	@Autowired
+	private Environment env;
 
-	//Variabelen koppelen met Configuration file (application.properties)
+/*	//Variabelen koppelen met Configuration file (application.properties)
 	@Value("${rabbitmq.exchangeName}")
-	private  String echangeName;
+	public static String exchangeName;
 	@Value("${rabbitmq.queueName}")
-	private String queueName;
+	private  String queueName;
 	@Value("${rabbitmq.routingKey}")
-	private String routingKey;
+	public static String routingKey;
 	@Value("${importPath}")
 	private  String fileName;
-
 	@Value("${simulator.delay}")
 	private  int delay;
+	@Value("${importfile.filename}")
+	public static  String importfile;*/
 
+/*	@Autowired
+	public SimulatorApplication(CameraBerichten cameraBerichten) {
+		this.cameraBerichten = cameraBerichten;
+	}*/
+
+
+/*
 	//getters and setters
 	public String getEchangeName() {
-		return echangeName;
+		return exchangeName;
 	}
 	public String getQueueName() {
 		return queueName;
@@ -61,17 +70,13 @@ public class SimulatorApplication implements CommandLineRunner {
 	public String getFileName() {
 		return fileName;
 	}
+*/
 
-//	@Autowired
-//	private BerichtenGenerator generator;
 
-//	@Autowired
-//	private CameraBericht cameraBericht;
+
 	@Autowired
 	private CameraBerichtToRabbitMQ cameraBerichtToRabbitMQ;
 
-	@Autowired
-	private CameraBerichten cameraBerichten;
 
 	public static void main(String[] args) throws InterruptedException {
 		//Wat gebeurt hier:
@@ -91,27 +96,17 @@ public class SimulatorApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
-		cameraBerichten.setDelay(delay);
-		cameraBerichten.setCameraInputModus(new RandomModus());
-		cameraBerichten.setOutputModusCameraBerichten(cameraBerichtToRabbitMQ);
+		ApplicationContext factory = new AnnotationConfigApplicationContext(ApplicationConfiguration.class);
 
+		CameraBerichten cameraBerichten = factory.getBean(CameraBerichten.class);
+
+		//cameraBerichten.setDelay(delay);
+		//System.out.println(Integer.valueOf( env.getProperty("app.delay")));
+		cameraBerichten.setDelay(Integer.valueOf( env.getProperty("app.delay")));
+		cameraBerichten.setCameraInputModus(factory.getBean(RandomModus.class));
+		cameraBerichten.setOutputModusCameraBerichten(cameraBerichtToRabbitMQ); ;
+		//cameraBerichten.setOutputModusCameraBerichten(factory.getBean(CameraBerichtToRabbitMQ.class)); ;
 		cameraBerichten.CreateCameraBerichten();
-
-
-/*		log.info("exchangeName: " + echangeName);
-		log.info("queueName: " + queueName );
-		log.info("routingKey: " + routingKey);
-		log.info("fileName: " + fileName);
-
-		//spring boot maakt object aan in container volgens het singleton pattern.
-		//generator.CreateBerichtenByModus(Modus.Random, 1000, fileName, "," , false ) ;
-		cameraBericht.setCameraInputModus(new RandomModus());
-		cameraBericht.setCameraOutputModus(cameraBerichtToRabbitMQ);
-
-		for(int i=0; i<100;i++){
-			cameraBericht.SendCameraBericht(  cameraBericht.CreateCameraBericht());
-		}*/
-
 	}
 
 	//Configuratie van RabbitMQ
@@ -119,19 +114,20 @@ public class SimulatorApplication implements CommandLineRunner {
 	@Bean
 	public TopicExchange cameraBerichtenExchange(){
 		//return new TopicExchange(EXCHANGE_NAME);
-		return new TopicExchange(echangeName);
+		//System.out.println( env.getProperty("rabbitmq.exchangeName")	);
+		return new TopicExchange(env.getProperty("rabbitmq.exchangeName"));
 	}
 
 	//2) aanmaken van een queue
 	@Bean
 	public Queue parsingQueue(){
-		return new Queue(queueName);
+		return new Queue(env.getProperty("rabbitmq.queueName"));
 	}
 
 	//3) koppeling van de queue en de exchange
 	@Bean
 	public Binding queueToExchangeBinding(){
-		return BindingBuilder.bind(parsingQueue()).to(cameraBerichtenExchange()).with(routingKey);
+		return BindingBuilder.bind(parsingQueue()).to(cameraBerichtenExchange()).with(env.getProperty("rabbitmq.routingKey"));
 	}
 
 	@Bean
@@ -145,5 +141,7 @@ public class SimulatorApplication implements CommandLineRunner {
 		rabbitTemplate.setMessageConverter(producerMessageConverter());
 		return rabbitTemplate;
 	}
+
+
 }
 

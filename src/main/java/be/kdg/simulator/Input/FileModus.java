@@ -1,10 +1,31 @@
 package be.kdg.simulator.Input;
 
+import be.kdg.simulator.InputModusCameraBerichten;
 import be.kdg.simulator.OutputModusCameraBerichten;
 import be.kdg.simulator.model.CameraBericht;
-import be.kdg.simulator.InputModusCameraBerichten;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
+import org.springframework.stereotype.Component;
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.sql.Timestamp;
+
+
+@Component
 public class FileModus implements InputModusCameraBerichten {
+    private static final Logger log = LoggerFactory.getLogger(FileModus.class);
+
+    @Autowired
+    private Environment env;
+
     @Override
     public CameraBericht CreateCameraBericht() {
         return null;
@@ -12,18 +33,9 @@ public class FileModus implements InputModusCameraBerichten {
 
     @Override
     public void CreateCameraBerichten(OutputModusCameraBerichten outputModusCameraBerichten, int delay) throws InterruptedException {
-
-    }
-
-
-
-
-
-/*    public List<CameraBericht> ReadCameraBerichtenFromCSV(String filename, String splitter){
-        List<CameraBericht> cameraBerichten = new ArrayList<>();
-
         try{
-            Path pathToFile = Paths.get(filename);
+            //Path pathToFile = Paths.get(importfile);
+            Path pathToFile = Paths.get(env.getProperty("importfile.filename"));
             if (!Files.exists(pathToFile)){
                 throw new FileNotFoundException("Path naar bestand bestaat niet!");
             }
@@ -37,10 +49,13 @@ public class FileModus implements InputModusCameraBerichten {
                 while(line != null){
                     String[] berichtVelden = line.split(",");
 
-                    CameraBericht bericht = berichtenGenerator.CreateCameraBericht(berichtVelden);
+                    int id =Integer.parseInt( berichtVelden[0]);
+                    Timestamp timeStamp = Timestamp.valueOf( berichtVelden[1]);
+                    String license = berichtVelden[2];
 
-                    //Toevoegen aan de lijst
-                    cameraBerichten.add(bericht);
+                    CameraBericht bericht = new CameraBericht(id, timeStamp ,license);
+                    bericht.setCameraOutputModus(outputModusCameraBerichten);
+                    bericht.SendCameraBericht();
 
                     //lees de volgende lijn
                     line = br.readLine();
@@ -56,9 +71,11 @@ public class FileModus implements InputModusCameraBerichten {
             log.error(ef.getMessage());
             ef.printStackTrace();
         }
+    }
 
-        return cameraBerichten;
-    }*/
+
+
+
 
 
 

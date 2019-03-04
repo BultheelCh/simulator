@@ -6,20 +6,25 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
+import org.springframework.core.env.Environment;
+import org.springframework.stereotype.Component;
 
-@Service
-//@Component
+
+
+//@Service
+@Component
 public class CameraBerichtToRabbitMQ implements OutputModusCameraBerichten {
 
     //opzetten van de logging
     private static final Logger log = LoggerFactory.getLogger(CameraBerichtToRabbitMQ.class);
 
+    @Autowired
+    private Environment env;
+
     private final RabbitTemplate rabbitTemplate;
 
-    @Autowired
-    CameraBerichtToRabbitMQ cameraBerichtToRabbitMQ;
+//    @Autowired
+//    CameraBerichtToRabbitMQ cameraBerichtToRabbitMQ;
 
     //Constructor
     public CameraBerichtToRabbitMQ(RabbitTemplate rabbitTemplate) {
@@ -28,12 +33,12 @@ public class CameraBerichtToRabbitMQ implements OutputModusCameraBerichten {
 
 
     //Variabelen koppelen met Configuration file (application.properties)
-    @Value("${rabbitmq.exchangeName}")
+/*    @Value("${rabbitmq.exchangeName}")
     private  String exchangeName;
     @Value("${rabbitmq.queueName}")
     private String queueName;
     @Value("${rabbitmq.routingKey}")
-    private String routingKey;
+    private String routingKey;*/
 
 
     //Verzenden van de bericht-objecten naar de queue
@@ -46,7 +51,8 @@ public class CameraBerichtToRabbitMQ implements OutputModusCameraBerichten {
         //cameraBericht.setCameraInputModus(new RandomModus());
         //cameraBericht = cameraBericht.CreateCameraBericht();
         //cameraBericht.SendCameraBericht(  cameraBericht.CreateCameraBericht());
-        rabbitTemplate.convertAndSend(exchangeName, routingKey, cameraBericht);
+        rabbitTemplate.convertAndSend(env.getProperty("rabbitmq.exchangeName"), env.getProperty("rabbitmq.routingKey"), cameraBericht);
+        //rabbitTemplate.convertAndSend(exchangeName, routingKey, cameraBericht);
         log.info("Camerabericht verzonden! (" + cameraBericht.toString() + ")");
 //        try {
 //            //stel vertraging in
@@ -65,4 +71,7 @@ public class CameraBerichtToRabbitMQ implements OutputModusCameraBerichten {
 //            System.out.println(ex.getMessage());
 //        }
     }
+
+
+
 }
