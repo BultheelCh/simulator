@@ -19,11 +19,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.core.env.Environment;
 
 @SpringBootApplication
-@ComponentScan(basePackages = "be.kdg.simulator")
+//@ComponentScan(basePackages = "be.kdg.simulator")
 //@Import({ApplicationConfiguration.class})
 //@EnableScheduling
 //@ComponentScan("be.kdg.simulator")
@@ -31,7 +30,6 @@ import org.springframework.core.env.Environment;
 public class SimulatorApplication implements CommandLineRunner {
 
 	private static final Logger log = LoggerFactory.getLogger(SimulatorApplication.class);
-	//private final CameraBerichten cameraBerichten;
 
 	@Autowired
 	private Environment env;
@@ -69,38 +67,40 @@ public class SimulatorApplication implements CommandLineRunner {
 		cameraBerichten.CreateCameraBerichten();
 	}
 
-	//Configuratie van RabbitMQ
-	//1) aanmaken van een nieuwe exchange
-	@Bean
-	public TopicExchange cameraBerichtenExchange(){
-		//return new TopicExchange(EXCHANGE_NAME);
-		//System.out.println( env.getProperty("rabbitmq.exchangeName")	);
-		return new TopicExchange(env.getProperty("rabbitmq.exchangeName"));
-	}
 
-	//2) aanmaken van een queue
-	@Bean
-	public Queue parsingQueue(){
-		return new Queue(env.getProperty("rabbitmq.queueName"));
-	}
+    //Configuratie van RabbitMQ
+    //1) aanmaken van een nieuwe exchange
+    @Bean
+    public TopicExchange cameraBerichtenExchange(){
+        //return new TopicExchange(EXCHANGE_NAME);
+        System.out.println( env.getProperty("rabbitmq.exchangeName")	);
+        return new TopicExchange(env.getProperty("rabbitmq.exchangeName"));
+    }
 
-	//3) koppeling van de queue en de exchange
-	@Bean
-	public Binding queueToExchangeBinding(){
-		return BindingBuilder.bind(parsingQueue()).to(cameraBerichtenExchange()).with(env.getProperty("rabbitmq.routingKey"));
-	}
+    //2) aanmaken van een queue
+    @Bean
+    public Queue parsingQueue(){
+        System.out.println(env.getProperty("rabbitmq.queueName"));
+        return new Queue(env.getProperty("rabbitmq.queueName"));
+    }
 
-	@Bean
-	public Jackson2JsonMessageConverter producerMessageConverter(){
-		return new Jackson2JsonMessageConverter();
-	}
+    //3) koppeling van de queue en de exchange
+    @Bean
+    public Binding queueToExchangeBinding(){
+        return BindingBuilder.bind(parsingQueue()).to(cameraBerichtenExchange()).with(env.getProperty("rabbitmq.routingKey"));
+    }
 
-	@Bean
-	public RabbitTemplate rabbitTemplate(final ConnectionFactory connectionFactory){
-		RabbitTemplate rabbitTemplate = new RabbitTemplate(connectionFactory);
-		rabbitTemplate.setMessageConverter(producerMessageConverter());
-		return rabbitTemplate;
-	}
+    @Bean
+    public Jackson2JsonMessageConverter producerMessageConverter(){
+        return new Jackson2JsonMessageConverter();
+    }
+
+    @Bean
+    public RabbitTemplate rabbitTemplate(final ConnectionFactory connectionFactory){
+        RabbitTemplate rabbitTemplate = new RabbitTemplate(connectionFactory);
+        rabbitTemplate.setMessageConverter(producerMessageConverter());
+        return rabbitTemplate;
+    }
 
 
 }

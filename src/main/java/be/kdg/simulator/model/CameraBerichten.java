@@ -1,7 +1,7 @@
 package be.kdg.simulator.model;
 
-import be.kdg.simulator.InputModusCameraBerichten;
-import be.kdg.simulator.OutputModusCameraBerichten;
+import be.kdg.simulator.Input.InputModusCameraBerichten;
+import be.kdg.simulator.Output.OutputModusCameraBerichten;
 import org.springframework.stereotype.Component;
 
 @Component

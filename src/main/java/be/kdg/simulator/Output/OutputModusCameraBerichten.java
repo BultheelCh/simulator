@@ -1,4 +1,4 @@
-package be.kdg.simulator;
+package be.kdg.simulator.Output;
 
 import be.kdg.simulator.model.CameraBericht;
 

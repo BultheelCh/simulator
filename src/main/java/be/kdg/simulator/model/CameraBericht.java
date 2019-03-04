@@ -1,6 +1,6 @@
 package be.kdg.simulator.model;
 
-import be.kdg.simulator.OutputModusCameraBerichten;
+import be.kdg.simulator.Output.OutputModusCameraBerichten;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.io.Serializable;

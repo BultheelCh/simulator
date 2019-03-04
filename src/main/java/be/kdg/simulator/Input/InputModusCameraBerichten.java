@@ -1,5 +1,6 @@
-package be.kdg.simulator;
+package be.kdg.simulator.Input;
 
+import be.kdg.simulator.Output.OutputModusCameraBerichten;
 import be.kdg.simulator.model.CameraBericht;
 
 public interface InputModusCameraBerichten {
