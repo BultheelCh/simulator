@@ -1,11 +1,10 @@
 package be.kdg.processor.model;
 
-import org.springframework.stereotype.Component;
-
 import javax.persistence.*;
 
-@Component
+//@Component
 @Entity
+@Table(name = "boete", schema = "CB")
 public class Boete {
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
