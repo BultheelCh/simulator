@@ -3,6 +3,7 @@ package be.kdg.simulator;
 import be.kdg.simulator.Configuration.AppProperties;
 import be.kdg.simulator.Configuration.ApplicationConfiguration;
 import be.kdg.simulator.Input.FileModus;
+import be.kdg.simulator.Input.RandomModus;
 import be.kdg.simulator.Output.CameraBerichtToRabbitMQ;
 import be.kdg.simulator.model.CameraBerichten;
 import org.slf4j.Logger;
@@ -29,6 +30,8 @@ public class SimulatorApplication implements CommandLineRunner {
 	private Environment env;
 	@Autowired
     private FileModus fileModus;
+	@Autowired
+	private RandomModus randomModus;
     @Autowired
     AppProperties appProperties;
 

@@ -27,7 +27,7 @@ public class RandomModus implements InputModusCameraBerichten {
 
     @Override
     public void CreateCameraBerichten(OutputModusCameraBerichten outputModusCameraBerichten, int delay) throws InterruptedException {
-        int maxId=100;
+        int maxId=10;
         //oneindige lus
         for(int i=0;;i++){
             CameraBericht cameraBericht = new CameraBericht(CreateCameraID(maxId),new Timestamp(System.currentTimeMillis()),CreateNummerplaat());
@@ -60,7 +60,7 @@ public class RandomModus implements InputModusCameraBerichten {
     }
 
     private  int CreateCameraID(int maxId){
-        Random rn = new Random();
+        Random rn = new Random(maxId);
         return rn.nextInt(maxId)+1;
     }
 

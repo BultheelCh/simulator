@@ -1,6 +1,6 @@
 package be.kdg.processor.Input;
 
-import be.kdg.simulator.Configuration.RabbitMqProperties;
+import be.kdg.processor.Configuration.RabbitMqProperties;
 import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.BindingBuilder;
 import org.springframework.amqp.core.Queue;
@@ -23,14 +23,14 @@ public class ConfigureRabbitMq {
         @Bean
         public TopicExchange cameraBerichtenExchange(){
             //return new TopicExchange(EXCHANGE_NAME);
-            System.out.println(rabbitMqProperties.getExchangeName());
+            //System.out.println(rabbitMqProperties.getExchangeName());
             return new TopicExchange(rabbitMqProperties.getExchangeName());
         }
 
 //2) aanmaken van een queue
         @Bean
         public Queue parsingQueue(){
-            System.out.println(rabbitMqProperties.getQueueName());
+            //System.out.println(rabbitMqProperties.getQueueName());
             return new Queue(rabbitMqProperties.getQueueName());
         }
 

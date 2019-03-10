@@ -1,7 +1,6 @@
 package be.kdg.processor.model;
 
-import be.kdg.processor.InputModusCameraBerichten;
-import be.kdg.processor.OutputModusCameraBerichten;
+import be.kdg.processor.Service.OvertredingsType;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.stereotype.Component;
 
@@ -16,8 +15,6 @@ public class CameraBericht implements Serializable{
     private Timestamp timestamp;
     private String license;
 
-    private OutputModusCameraBerichten cameraOutputModus;
-    private InputModusCameraBerichten cameraInputModus;
 
     //getter and setters
     public int getId() {
@@ -38,12 +35,6 @@ public class CameraBericht implements Serializable{
     public void setLicense(String license) {
         this.license = license;
     }
-    public void setCameraInputModus(InputModusCameraBerichten cameraInputModus) {
-        this.cameraInputModus = cameraInputModus;
-    }
-    public void setCameraOutputModus(OutputModusCameraBerichten cameraOutputModus) {
-        this.cameraOutputModus = cameraOutputModus;
-    }
 
 
     //Constructors
@@ -57,13 +48,15 @@ public class CameraBericht implements Serializable{
     }
 
     //Methods
-    public CameraBericht CreateCameraBericht(){
-        return cameraInputModus.CreateCameraBericht();
-   }
-    public void SendCameraBericht(CameraBericht cameraBericht){
-        cameraOutputModus.SendTo(cameraBericht);
-    }
+    public Boete processCameraBericht(OvertredingsType overtredingsType){
+        //Bepaal overtreding
+        Boete b = overtredingsType.berekeningBoete(this);
+        if (b !=null){
+            System.out.println("Berekende snelheisovertreding: " + b.toString());
+        }
+        return b;
 
+    }
 
     @Override
     public String toString(){

@@ -1,10 +1,14 @@
 package be.kdg.processor.model;
 
+import org.springframework.stereotype.Component;
+
+@Component
 public class Camera {
     private int cameraId;
     private float breedtegraad;
     private float lengtegraad;
-    private WegSegment wegsegment;
+    private Segment segment;
+    private String euroNorm;
 
     //getters and setters
     public int getCameraId() {
@@ -25,12 +29,16 @@ public class Camera {
     public void setLengtegraad(float lengtegraad) {
         this.lengtegraad = lengtegraad;
     }
-    public WegSegment getWegsegment() {
-        return wegsegment;
+    public Segment getSegment() {
+        return segment;
     }
-    public void setWegsegment(WegSegment wegsegment) {
-        this.wegsegment = wegsegment;
+    public void setSegment(Segment segment) {
+        this.segment = segment;
     }
-
-
+    public String getEuroNorm() {
+        return euroNorm;
+    }
+    public void setEuroNorm(String euroNorm) {
+        this.euroNorm = euroNorm;
+    }
 }

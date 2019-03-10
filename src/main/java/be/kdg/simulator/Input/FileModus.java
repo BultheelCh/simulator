@@ -56,7 +56,7 @@ public class FileModus implements InputModusCameraBerichten {
                     delay = Integer.valueOf( berichtVelden[2]);
                     String license = berichtVelden[1];
 
-                    CameraBericht bericht = new CameraBericht(id,   new Timestamp(System.currentTimeMillis()) ,license);
+                    CameraBericht bericht = new CameraBericht(id,   new Timestamp(System.currentTimeMillis()+delay) ,license);
                     bericht.setCameraOutputModus(outputModusCameraBerichten);
                     TimeUnit.SECONDS.sleep(delay/1000);
                     bericht.SendCameraBericht();

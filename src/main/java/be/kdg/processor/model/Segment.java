@@ -1,15 +1,18 @@
 package be.kdg.processor.model;
 
-public class WegSegment {
-    private int  connectedCamera;
+import org.springframework.stereotype.Component;
+
+@Component
+public class Segment {
+    private int  connectedCameraId;
     private double distance;
     private double speedLimit;
 
     public int getConnectedCamera() {
-        return connectedCamera;
+        return connectedCameraId;
     }
-    public void setConnectedCamera(int connectedCamera) {
-        this.connectedCamera = connectedCamera;
+    public void setConnectedCamera(int connectedCameraId) {
+        this.connectedCameraId = connectedCameraId;
     }
     public double getDistance() {
         return distance;
