@@ -9,6 +9,7 @@ public class AppProperties {
 
     private String importfilename;
     private int delay;
+    private int maxCameraId;
 
     public String getImportfilename() {
         return importfilename;
@@ -22,5 +23,10 @@ public class AppProperties {
     public void setDelay(int delay) {
         this.delay = delay;
     }
-
+    public int getMaxCameraId() {
+        return maxCameraId;
+    }
+    public void setMaxCameraId(int maxCameraId) {
+        this.maxCameraId = maxCameraId;
+    }
 }

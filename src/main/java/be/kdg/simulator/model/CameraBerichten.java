@@ -1,14 +1,14 @@
 package be.kdg.simulator.model;
 
-import be.kdg.simulator.Input.InputModusCameraBerichten;
-import be.kdg.simulator.Output.OutputModusCameraBerichten;
+import be.kdg.simulator.Input.CameraMessageReceiver;
+import be.kdg.simulator.Output.CameraMessageSender;
 import org.springframework.stereotype.Component;
 
 @Component
 public class CameraBerichten  {
     private int delay;
-    private InputModusCameraBerichten cameraInputModus;
-    private OutputModusCameraBerichten  outputModusCameraBerichten;
+    private CameraMessageReceiver cameraMessageReceiver;
+    private CameraMessageSender cameraMessageSender;
 
     //getters and setters
     public int getDelay() {
@@ -17,22 +17,22 @@ public class CameraBerichten  {
     public void setDelay(int delay) {
         this.delay = delay;
     }
-    public InputModusCameraBerichten getCameraInputModus() {
-        return cameraInputModus;
+    public CameraMessageReceiver getCameraInputModus() {
+        return cameraMessageReceiver;
     }
-    public void setCameraInputModus(InputModusCameraBerichten cameraInputModus) {
-        this.cameraInputModus = cameraInputModus;
+    public void setCameraInputModus(CameraMessageReceiver cameraMessageReceiver) {
+        this.cameraMessageReceiver = cameraMessageReceiver;
     }
-    public OutputModusCameraBerichten getOutputModusCameraBerichten() {
-        return outputModusCameraBerichten;
+    public CameraMessageSender getOutputModusCameraBerichten() {
+        return cameraMessageSender;
     }
-    public void setOutputModusCameraBerichten(OutputModusCameraBerichten outputModusCameraBerichten) {
-        this.outputModusCameraBerichten = outputModusCameraBerichten;
+    public void setOutputModusCameraBerichten(CameraMessageSender cameraMessageSender) {
+        this.cameraMessageSender = cameraMessageSender;
     }
 
     //Methods
     public void CreateCameraBerichten() throws InterruptedException {
-        cameraInputModus.CreateCameraBerichten(outputModusCameraBerichten,delay);
+        cameraMessageReceiver.CreateCameraBerichten(cameraMessageSender,delay);
     }
 
 

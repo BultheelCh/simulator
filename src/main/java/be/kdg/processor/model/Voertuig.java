@@ -28,4 +28,12 @@ public class Voertuig {
     }
 
 
+    @Override
+    public String toString() {
+        return "Voertuig{" +
+                "plateId='" + plateId + '\'' +
+                ", nationalNumber='" + nationalNumber + '\'' +
+                ", euroNumber='" + euroNumber + '\'' +
+                '}';
+    }
 }

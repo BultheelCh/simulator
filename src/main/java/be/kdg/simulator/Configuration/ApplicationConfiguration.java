@@ -2,6 +2,8 @@ package be.kdg.simulator.Configuration;
 
 import be.kdg.simulator.Input.RandomModus;
 import be.kdg.simulator.model.CameraBerichten;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -10,25 +12,17 @@ import org.springframework.core.env.Environment;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 
-//@Profile("!dev")
-
 @Configuration
-//@ComponentScan(basePackages = "be.kdg.simulator")
-//@PropertySource("classpath:application.properties")
 public class ApplicationConfiguration {
+    private static final Logger log = LoggerFactory.getLogger(ApplicationConfiguration.class);
 
     @Autowired
     private Environment env;
 
     @PostConstruct
     public void test(){
-        System.out.println("Application Configuration loading");
+        log.info("Application Configuration loading");
     }
-
-/*   @Bean
-    public CameraBerichtToRabbitMQ getRabbitMQ(){
-        return new CameraBerichtToRabbitMQ(new RabbitTemplate());
-    }*/
 
     @Bean
     public CameraBerichten getCameraBerichten(){
@@ -40,20 +34,15 @@ public class ApplicationConfiguration {
         return new RandomModus();
     }
 
-  /*  @Bean AppProperties getAppProperties(){
-        return new AppProperties();
-    }
-
     @Bean
-    public FileModus getFileModus(){
-        return new FileModus();
-    }
-*/
+    public  AppProperties getAppProperties(){
+        return new AppProperties();
+    } 
+
 
     @PreDestroy
     public void destroy(){
-        System.out.println("Application Configuration destroy");
-        //System.out.println(delay);
+        log.info("Application Configuration destroy");
     }
 
 

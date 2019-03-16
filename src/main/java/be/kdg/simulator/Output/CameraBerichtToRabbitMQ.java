@@ -10,16 +10,14 @@ import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 
 @Component
-public class CameraBerichtToRabbitMQ implements OutputModusCameraBerichten {
+public class CameraBerichtToRabbitMQ implements CameraMessageSender {
 
-    //opzetten van de logging
     private static final Logger log = LoggerFactory.getLogger(CameraBerichtToRabbitMQ.class);
 
     @Autowired
     private Environment env;
     @Autowired
     private RabbitMqProperties rabbitMqProperties;
-
 
     private final RabbitTemplate rabbitTemplate;
 
@@ -32,7 +30,7 @@ public class CameraBerichtToRabbitMQ implements OutputModusCameraBerichten {
     //@Scheduled(fixedDelay = 3000L)
     //=> bericht wordt verzonden om de 3 seconden.
     @Override
-    public void SendTo(CameraBericht cameraBericht) {
+    public void Send(CameraBericht cameraBericht) {
         rabbitTemplate.convertAndSend(rabbitMqProperties.getExchangeName() , rabbitMqProperties.getRoutingKey() , cameraBericht);
         log.info("Camerabericht verzonden! (" + cameraBericht.toString() + ")");
     }

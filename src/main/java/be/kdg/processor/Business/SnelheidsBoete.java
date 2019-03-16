@@ -1,10 +1,12 @@
-package be.kdg.processor.model;
+package be.kdg.processor.Business;
 
-import be.kdg.processor.Business.CameraBerichten;
-import be.kdg.processor.Business.Cameras;
 import be.kdg.processor.Configuration.BoeteProperties;
 import be.kdg.processor.Service.ProxyCameraService;
 import be.kdg.processor.Service.ProxyLicenseService;
+import be.kdg.processor.model.Boete;
+import be.kdg.processor.model.Camera;
+import be.kdg.processor.model.CameraBericht;
+import be.kdg.processor.model.Voertuig;
 import com.google.gson.Gson;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,11 +20,11 @@ import java.util.stream.Collectors;
 
 @Component
 @ComponentScan("be.kdg.processor.Service")
-public class SnelheidsOvertreding extends Overtreding {
-    private static final Logger log = LoggerFactory.getLogger(SnelheidsOvertreding.class);
+public class SnelheidsBoete extends Boete {
+    private static final Logger log = LoggerFactory.getLogger(SnelheidsBoete.class);
 
     @Autowired
-    CameraBerichten cameraBerichten;
+    CameraBerichtService cameraBerichtService;
     @Autowired
     Cameras cameras;
     @Autowired
@@ -31,6 +33,7 @@ public class SnelheidsOvertreding extends Overtreding {
     private ProxyCameraService proxyCameraService;
     @Autowired
     private ProxyLicenseService proxyLicenseService;
+
 
     @Override
     public Boete berekeningBoete(CameraBericht cameraBericht ) {
@@ -41,28 +44,31 @@ public class SnelheidsOvertreding extends Overtreding {
         //Bepaling 2e camerabericht
         try{
             Camera camera = getCamera(cameraBericht);
-            if (camera.getSegment()== null || camera.getSegment().getConnectedCamera()==0){
+            if (camera.getSegment()== null || camera.getSegment().getConnectedCameraId()==0){
+            //if (camera.getSegment()== null || camera.getSegment().getConnectedCameraId()=){
                 //Camerabericht 2e camera => geen extra info
                  connectedCamera = cameras.getCameraList()
                                             .stream()
-                                            .filter(c -> camera.getCameraId() == c.getSegment().getConnectedCamera())
+                                            .filter(c -> camera.getCameraId() == c.getSegment().getConnectedCameraId() )
                                             .findAny()
                                             .orElse(null);
 
-                 cameraBerichtList = cameraBerichten.getCameraBerichten()
-                                                            .stream()
-                                                            .filter(b -> (b.getId() == connectedCamera.getCameraId()))
-                                                            .filter(b1 -> b1.getLicense().equals(cameraBericht.getLicense()))
-                                                            .filter(b2 -> b2.getTimestamp().before(cameraBericht.getTimestamp()))
-                                                            .collect(Collectors.toList());
+                 if (connectedCamera != null) {
+                     cameraBerichtList = cameraBerichtService.getCameraBerichten()
+                             .stream()
+                             .filter(b -> b.getId() == connectedCamera.getCameraId())
+                             .filter(b -> b.getLicense().equals(cameraBericht.getLicense()))
+                             .filter(b -> b.getTimestamp().before(cameraBericht.getTimestamp()))
+                             .collect(Collectors.toList());
+                 }
 
             } else {
                 connectedCamera = camera;
-                cameraBerichtList = cameraBerichten.getCameraBerichten()
+                cameraBerichtList = cameraBerichtService.getCameraBerichten()
                         .stream()
-                        .filter(c -> c.getId() == connectedCamera.getSegment().getConnectedCamera() &&
-                                     c.getLicense()==cameraBericht.getLicense() &&
-                                     c.getTimestamp().after( cameraBericht.getTimestamp()))
+                        .filter(c -> c.getId() == connectedCamera.getSegment().getConnectedCameraId())
+                        .filter(c -> c.getLicense()==cameraBericht.getLicense())
+                        .filter(c ->  c.getTimestamp().after( cameraBericht.getTimestamp()))
                         .sorted()
                         .collect(Collectors.toList());
             }
@@ -75,17 +81,17 @@ public class SnelheidsOvertreding extends Overtreding {
 
             //verwijderd verwerkte berichten
             if(boete!=null) {
-                cameraBerichten.getCameraBerichten().remove(cameraBericht);
-                cameraBerichten.getCameraBerichten().remove(cameraBerichtList.get(0));
+                cameraBerichtService.getCameraBerichten().remove(cameraBericht);
+                cameraBerichtService.getCameraBerichten().remove(cameraBerichtList.get(0));
             }
         } catch (Exception ex ) {
-            log.info(ex.getMessage());
+            log.warn(ex.getMessage());
             //System.out.println(ex.getMessage());
         }
         return boete;
     }
     private Boete createNieuweBoete(CameraBericht camerabericht1, CameraBericht cameraBericht2, Camera connectedCamera){
-        Voertuig voertuigInfo =  getVoertuigInfon(camerabericht1.getLicense());
+        Voertuig voertuigInfo =  getVoertuigInfo(camerabericht1.getLicense());
         if (voertuigInfo==null){
             return null;
         }
@@ -109,7 +115,14 @@ public class SnelheidsOvertreding extends Overtreding {
         if (camera ==null){
             return null;
         }
+        for(Camera c : cameras.getCameraList()){
+            if (c.equals(camera)){
+                return camera;
+            }
+        }
+
         cameras.getCameraList().add(camera);
+
         return camera;
     }
     private double berekenSnelheid(double afstand, long seconden){
@@ -122,7 +135,7 @@ public class SnelheidsOvertreding extends Overtreding {
         }
         return (gemSnelheid-maxSnelheid)*boetefactor;
     }
-    private Voertuig getVoertuigInfon(String license){
+    private Voertuig getVoertuigInfo(String license){
         Voertuig voertuiginfo=null;
         String voertuigInfo = proxyLicenseService.get(license);
         Gson gson = new Gson();

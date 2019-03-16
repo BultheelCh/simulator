@@ -1,12 +1,16 @@
 package be.kdg.simulator.Output;
 
 import be.kdg.simulator.model.CameraBericht;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 @Component
-public class CameraBerichtToConsole implements OutputModusCameraBerichten {
+public class CameraBerichtToConsole implements CameraMessageSender {
+    private static final Logger log = LoggerFactory.getLogger(CameraBerichtToConsole.class);
+
     @Override
-    public void SendTo(CameraBericht cameraBericht) {
-        System.out.println(cameraBericht.toString());
+    public void Send(CameraBericht cameraBericht) {
+        log.info(cameraBericht.toString());
     }
 }

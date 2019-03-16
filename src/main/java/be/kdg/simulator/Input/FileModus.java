@@ -1,7 +1,7 @@
 package be.kdg.simulator.Input;
 
 import be.kdg.simulator.Configuration.AppProperties;
-import be.kdg.simulator.Output.OutputModusCameraBerichten;
+import be.kdg.simulator.Output.CameraMessageSender;
 import be.kdg.simulator.model.CameraBericht;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,7 +20,7 @@ import java.util.concurrent.TimeUnit;
 
 
 @Component
-public class FileModus implements InputModusCameraBerichten {
+public class FileModus implements CameraMessageReceiver {
     private static final Logger log = LoggerFactory.getLogger(FileModus.class);
 
     @Autowired
@@ -32,12 +32,9 @@ public class FileModus implements InputModusCameraBerichten {
     }
 
     @Override
-    public void CreateCameraBerichten(OutputModusCameraBerichten outputModusCameraBerichten, int delay) throws InterruptedException {
+    public void CreateCameraBerichten(CameraMessageSender cameraMessageSender, int delay) throws InterruptedException {
         try{
-            //Path pathToFile = Paths.get(importfile);
-            System.out.println(appProperties.getImportfilename());
-           // System.out.println(env.getProperty("app.importfilename") );
-            //Path pathToFile = Paths.get(env.getProperty("app.importfilename"));
+            log.info(appProperties.getImportfilename());
             Path pathToFile = Paths.get(appProperties.getImportfilename());
             if (!Files.exists(pathToFile)){
                 throw new FileNotFoundException("Path naar bestand bestaat niet!");
@@ -57,7 +54,7 @@ public class FileModus implements InputModusCameraBerichten {
                     String license = berichtVelden[1];
 
                     CameraBericht bericht = new CameraBericht(id,   new Timestamp(System.currentTimeMillis()+delay) ,license);
-                    bericht.setCameraOutputModus(outputModusCameraBerichten);
+                    bericht.setCameraOutputModus(cameraMessageSender);
                     TimeUnit.SECONDS.sleep(delay/1000);
                     bericht.SendCameraBericht();
 

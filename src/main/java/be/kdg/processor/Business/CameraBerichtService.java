@@ -2,10 +2,7 @@
 
 package be.kdg.processor.Business;
 
-import be.kdg.processor.Service.Observer;
-import be.kdg.processor.Service.Subject;
 import be.kdg.processor.model.CameraBericht;
-import be.kdg.processor.model.SnelheidsOvertreding;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -13,10 +10,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Component
-public  class CameraBerichten implements Subject {
+public  class CameraBerichtService implements Subject {
 
     @Autowired
-    SnelheidsOvertreding snelheidsOvertreding;
+    SnelheidsBoete snelheidsBoete;
+    @Autowired
+    EmissieBoete emissieBoete;
 
     private List<Observer> observers;
     private List<CameraBericht> cameraBerichten = new ArrayList<>();
@@ -32,7 +31,7 @@ public  class CameraBerichten implements Subject {
     }
 
     //Observer Pattern
-    public CameraBerichten() {
+    public CameraBerichtService() {
         observers = new ArrayList<Observer>();
     }
 
@@ -50,7 +49,7 @@ public  class CameraBerichten implements Subject {
     @Override
     public void notifyObserver(CameraBericht cameraBericht) {
         for (Observer observer: observers){
-            observer.berekenBoete(cameraBericht, snelheidsOvertreding);
+            observer.berekenBoete(cameraBericht, emissieBoete);
         }
     }
 

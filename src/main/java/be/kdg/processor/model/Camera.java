@@ -5,8 +5,9 @@ import org.springframework.stereotype.Component;
 @Component
 public class Camera {
     private int cameraId;
-    private float breedtegraad;
-    private float lengtegraad;
+    private Location location;
+//    private float breedtegraad;
+//    private float lengtegraad;
     private Segment segment;
     private String euroNorm;
 
@@ -17,6 +18,7 @@ public class Camera {
     public void setCameraId(int cameraId) {
         this.cameraId = cameraId;
     }
+/*
     public float getBreedtegraad() {
         return breedtegraad;
     }
@@ -29,6 +31,7 @@ public class Camera {
     public void setLengtegraad(float lengtegraad) {
         this.lengtegraad = lengtegraad;
     }
+    */
     public Segment getSegment() {
         return segment;
     }
@@ -40,5 +43,35 @@ public class Camera {
     }
     public void setEuroNorm(String euroNorm) {
         this.euroNorm = euroNorm;
+    }
+    public Location getLocation() {
+        return location;
+    }
+    public void setLocation(Location location) {
+        this.location = location;
+    }
+
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        } else if (obj == null) {
+            return false;
+        } else if (obj instanceof Camera) {
+            Camera camera = (Camera) obj;
+            if (this.getCameraId() == ((Camera) obj).getCameraId()){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public String toString() {
+        return "Camera{" +
+                "cameraId=" + cameraId +
+                ", location=" + location +
+                ", segment=" + segment +
+                ", euroNorm='" + euroNorm + '\'' +
+                '}';
     }
 }

@@ -1,4 +1,4 @@
-package be.kdg.processor.Service;
+package be.kdg.processor.Business;
 
 import be.kdg.processor.model.CameraBericht;
 

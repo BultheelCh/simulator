@@ -2,7 +2,7 @@ package be.kdg.processor.Input;
 
 
 import be.kdg.processor.Business.Boetes;
-import be.kdg.processor.Business.CameraBerichten;
+import be.kdg.processor.Business.CameraBerichtService;
 import be.kdg.processor.model.CameraBericht;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,31 +13,27 @@ import org.springframework.stereotype.Service;
 
 @Service
 @ComponentScan("be.kdg.processor.Service")
-public class RabbitMQ  {
+public class CameraBerichtFromRabbitMQ implements CameraMessageReceiver {
 
-
-    private static final Logger log = LoggerFactory.getLogger(RabbitMQ.class);
+    private static final Logger log = LoggerFactory.getLogger(CameraBerichtFromRabbitMQ.class);
 
     @Autowired
     Boetes boetes;
     @Autowired
-    CameraBerichten cameraBerichten;
+    CameraBerichtService cameraBerichtService;
 
     @RabbitListener(queues = "queue_cameraberichten" )
-    public void ReadCameraCamera(final CameraBericht cameraBericht){
+    public void ReadCameraBericht(final CameraBericht cameraBericht){
         try {
             log.info("Received message with default configuration: {}", cameraBericht.toString());
-            cameraBerichten.register(boetes);
-            cameraBerichten.addCameraBericht(cameraBericht);
-            cameraBerichten.unregister(boetes);
+            cameraBerichtService.register(boetes);
+            cameraBerichtService.addCameraBericht(cameraBericht);
+            cameraBerichtService.unregister(boetes);
 
         } catch (Exception e){
-            e.printStackTrace();
+            log.error(e.getMessage());
+
         }
     }
-
-
-
-
 }
 

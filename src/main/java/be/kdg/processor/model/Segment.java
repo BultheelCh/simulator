@@ -5,13 +5,14 @@ import org.springframework.stereotype.Component;
 @Component
 public class Segment {
     private int  connectedCameraId;
+    //private Camera connectedCamera;
     private double distance;
     private double speedLimit;
 
-    public int getConnectedCamera() {
+    public int getConnectedCameraId() {
         return connectedCameraId;
     }
-    public void setConnectedCamera(int connectedCameraId) {
+    public void setConnectedCameraId(int connectedCameraId) {
         this.connectedCameraId = connectedCameraId;
     }
     public double getDistance() {
@@ -25,5 +26,22 @@ public class Segment {
     }
     public void setSpeedLimit(double speedLimit) {
         this.speedLimit = speedLimit;
+    }
+/*
+    public Camera getConnectedCamera() {
+        return connectedCamera;
+    }
+    public void setConnectedCamera(Camera connectedCamera) {
+        this.connectedCamera = connectedCamera;
+    }
+    */
+
+    @Override
+    public String toString() {
+        return "Segment{" +
+                "connectedCameraId=" + connectedCameraId +
+                ", distance=" + distance +
+                ", speedLimit=" + speedLimit +
+                '}';
     }
 }

@@ -5,7 +5,7 @@ import java.time.LocalDate;
 
 @Entity
 @Table(name = "boete", schema = "CB")
-public class Boete {
+public /*abstract*/ class Boete implements BoeteType{
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
     @Column(name="BoeteId")
@@ -54,9 +54,9 @@ public class Boete {
         this.datum = datum;
     }
 
+    //constructors
     //gebruikt voor aanmaken database
     protected Boete(){}
-
     public Boete(String nationaalNr, String nummerplaat, double bedrag, String overtredingsType, LocalDate datum){
         this.bedrag= bedrag;
         this.nationaalNr= nationaalNr;
@@ -70,5 +70,9 @@ public class Boete {
         return String.format("NationaalNr:%s  Nummerplaat:%s  Overtredingstype:%s  boetebedrag:%f", nationaalNr, nummerplaat, overtredingsType, bedrag);
     }
 
+    @Override
+    public Boete berekeningBoete(CameraBericht cameraBericht) {
+        return null;
+    }
 
 }

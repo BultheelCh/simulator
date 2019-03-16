@@ -1,7 +1,9 @@
 package be.kdg.simulator.Input;
 
-import be.kdg.simulator.Output.OutputModusCameraBerichten;
+import be.kdg.simulator.Configuration.AppProperties;
+import be.kdg.simulator.Output.CameraMessageSender;
 import be.kdg.simulator.model.CameraBericht;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.stereotype.Component;
 
 import java.sql.Timestamp;
@@ -9,34 +11,30 @@ import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 @Component
-public class RandomModus implements InputModusCameraBerichten {
+@ComponentScan("be.kdg.simulator.Service")
+public class RandomModus implements CameraMessageReceiver {
 
     private  final String LETTERS = "abcdefghijklmnopqrstuvwxyz";
     private  final char[] ALPHANUMERIC = LETTERS.toCharArray();
+    private AppProperties appProperties;
 
     @Override
     public  CameraBericht CreateCameraBericht() {
-            //instelbaar max voor cameraId => config file
-            int maxId=100;
-            CameraBericht cameraBericht = new CameraBericht(CreateCameraID(maxId),new Timestamp(System.currentTimeMillis()),CreateNummerplaat());
-//            cameraBericht.setId(CreateCameraID(maxId));
-//            cameraBericht.setTimestamp(new Timestamp(System.currentTimeMillis()));
-//            cameraBericht.setLicense(CreateNummerplaat());
+            CameraBericht cameraBericht = new CameraBericht(CreateCameraID(appProperties.getMaxCameraId()),new Timestamp(System.currentTimeMillis()),CreateNummerplaat());
             return cameraBericht;
         }
 
     @Override
-    public void CreateCameraBerichten(OutputModusCameraBerichten outputModusCameraBerichten, int delay) throws InterruptedException {
-        int maxId=10;
+    public void CreateCameraBerichten(CameraMessageSender cameraMessageSender, int delay) throws InterruptedException {
         //oneindige lus
         for(int i=0;;i++){
-            CameraBericht cameraBericht = new CameraBericht(CreateCameraID(maxId),new Timestamp(System.currentTimeMillis()),CreateNummerplaat());
-            cameraBericht.setCameraOutputModus(outputModusCameraBerichten);
+            CameraBericht cameraBericht = CreateCameraBericht();
+            //CameraBericht cameraBericht = new CameraBericht(CreateCameraID(appProperties.getMaxCameraId()),new Timestamp(System.currentTimeMillis()),CreateNummerplaat());
+            cameraBericht.setCameraOutputModus(cameraMessageSender);
             TimeUnit.SECONDS.sleep(delay);
             cameraBericht.SendCameraBericht();
         }
     }
-
 
     private   String CreateNummerplaat(){
         //first number
@@ -58,7 +56,6 @@ public class RandomModus implements InputModusCameraBerichten {
 
         return String.format("%s-%s-%s", firstNumber, alpha.toString().toUpperCase(), numeric);
     }
-
     private  int CreateCameraID(int maxId){
         Random rn = new Random(maxId);
         return rn.nextInt(maxId)+1;

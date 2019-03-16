@@ -1,6 +1,6 @@
 package be.kdg.simulator.model;
 
-import be.kdg.simulator.Output.OutputModusCameraBerichten;
+import be.kdg.simulator.Output.CameraMessageSender;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.io.Serializable;
@@ -14,7 +14,7 @@ public class CameraBericht implements Serializable{
     private  Timestamp timestamp;
     private  String license;
 
-    private OutputModusCameraBerichten cameraOutputModus;
+    private CameraMessageSender cameraMessageSender;
 
     //getter and setters
     public int getId() {
@@ -36,8 +36,8 @@ public class CameraBericht implements Serializable{
         this.license = license;
     }
 
-    public void setCameraOutputModus(OutputModusCameraBerichten cameraOutputModus) {
-        this.cameraOutputModus = cameraOutputModus;
+    public void setCameraOutputModus(CameraMessageSender cameraMessageSender) {
+        this.cameraMessageSender = cameraMessageSender;
     }
 
 
@@ -53,7 +53,7 @@ public class CameraBericht implements Serializable{
 
     //Methods
     public void SendCameraBericht(){
-        cameraOutputModus.SendTo(this);
+        cameraMessageSender.Send(this);
     }
 
     @Override
