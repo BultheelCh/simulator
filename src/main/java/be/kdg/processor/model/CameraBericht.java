@@ -1,6 +1,5 @@
 package be.kdg.processor.model;
 
-import be.kdg.processor.Service.OvertredingsType;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.stereotype.Component;
 
@@ -10,11 +9,13 @@ import java.text.SimpleDateFormat;
 
 @Component
 //@Component("camber1")
-public class CameraBericht implements Serializable{
+public class CameraBericht implements Serializable/*, Observer*/{
     private int id;
     private Timestamp timestamp;
     private String license;
 
+//    @Autowired
+//    BoeteRepository boeteRepository;
 
     //getter and setters
     public int getId() {
@@ -38,7 +39,9 @@ public class CameraBericht implements Serializable{
 
 
     //Constructors
-    public CameraBericht(){};
+    public CameraBericht(){
+
+    };
     public CameraBericht(@JsonProperty("id") final int id,
                          @JsonProperty("timestamp") Timestamp timestamp,
                          @JsonProperty("license")String license) {
@@ -47,8 +50,10 @@ public class CameraBericht implements Serializable{
         this.license = license;
     }
 
+
+
     //Methods
-    public Boete processCameraBericht(OvertredingsType overtredingsType){
+/*    public Boete processCameraBericht(OvertredingsType overtredingsType){
         //Bepaal overtreding
         Boete b = overtredingsType.berekeningBoete(this);
         if (b !=null){
@@ -56,7 +61,7 @@ public class CameraBericht implements Serializable{
         }
         return b;
 
-    }
+    }*/
 
     @Override
     public String toString(){
@@ -64,6 +69,14 @@ public class CameraBericht implements Serializable{
 
     }
 
+
+/*    @Override
+    public void berekenBoete(OvertredingsType overtredingsType) {
+        Boete boete = processCameraBericht(overtredingsType);
+        if (boete != null) {
+            boeteRepository.save(boete);
+        }
+    }*/
 }
 
 

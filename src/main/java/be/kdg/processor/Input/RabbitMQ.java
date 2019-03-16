@@ -1,11 +1,9 @@
 package be.kdg.processor.Input;
 
 
+import be.kdg.processor.Business.Boetes;
 import be.kdg.processor.Business.CameraBerichten;
-import be.kdg.processor.Repsitory.BoeteRepository;
-import be.kdg.processor.model.Boete;
 import be.kdg.processor.model.CameraBericht;
-import be.kdg.processor.model.SnelheidsOvertreding;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
@@ -21,22 +19,28 @@ public class RabbitMQ  {
     private static final Logger log = LoggerFactory.getLogger(RabbitMQ.class);
 
     @Autowired
+    Boetes boetes;
+    @Autowired
     CameraBerichten cameraBerichten;
-    @Autowired
-    SnelheidsOvertreding snelheidsOvertreding;
-    @Autowired
-    BoeteRepository boeteRepository;
+//    @Autowired
+//    SnelheidsOvertreding snelheidsOvertreding;
+//    @Autowired
+//    BoeteRepository boeteRepository;
 
 
     @RabbitListener(queues = "queue_cameraberichten" )
     public void ReadCameraCamera(final CameraBericht cameraBericht){
         try {
             log.info("Received message with default configuration: {}", cameraBericht.toString());
+            cameraBerichten.register(boetes);
             cameraBerichten.addCameraBericht(cameraBericht);
-            Boete boete = cameraBericht.processCameraBericht(snelheidsOvertreding);
-            if (boete != null) {
-                boeteRepository.save(boete);
-            }
+            cameraBerichten.unregister(boetes);
+//            Boete boete = cameraBericht.processCameraBericht(snelheidsOvertreding);
+//            if (boete != null) {
+//                boeteRepository.save(boete);
+//            }
+
+
         } catch (Exception e){
             e.printStackTrace();
         }

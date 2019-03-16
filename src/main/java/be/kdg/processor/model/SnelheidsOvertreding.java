@@ -6,6 +6,8 @@ import be.kdg.processor.Configuration.BoeteProperties;
 import be.kdg.processor.Service.ProxyCameraService;
 import be.kdg.processor.Service.ProxyLicenseService;
 import com.google.gson.Gson;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.stereotype.Component;
@@ -17,6 +19,8 @@ import java.util.stream.Collectors;
 @Component
 @ComponentScan("be.kdg.processor.Service")
 public class SnelheidsOvertreding extends Overtreding {
+    private static final Logger log = LoggerFactory.getLogger(SnelheidsOvertreding.class);
+
     @Autowired
     CameraBerichten cameraBerichten;
     @Autowired
@@ -75,7 +79,8 @@ public class SnelheidsOvertreding extends Overtreding {
                 cameraBerichten.getCameraBerichten().remove(cameraBerichtList.get(0));
             }
         } catch (Exception ex ) {
-            System.out.println(ex.getMessage());
+            log.info(ex.getMessage());
+            //System.out.println(ex.getMessage());
         }
         return boete;
     }
@@ -96,7 +101,7 @@ public class SnelheidsOvertreding extends Overtreding {
             return null;
         }
 
-        return new Boete(voertuigInfo.getNationalNumber(), voertuigInfo.getPlateId(),  boetebedrag, this.getClass().getSimpleName());
+        return new Boete(voertuigInfo.getNationalNumber(), voertuigInfo.getPlateId(),  boetebedrag, this.getClass().getSimpleName(),camerabericht1.getTimestamp().toLocalDateTime().toLocalDate());
     }
 
     private Camera getCamera(CameraBericht cameraBericht ){
@@ -111,7 +116,7 @@ public class SnelheidsOvertreding extends Overtreding {
     }
 
     private double berekenSnelheid(double afstand, long seconden){
-        //System.out.println(((afstand/seconden)*3600/1000));
+        //log.info(String.valueOf(((afstand/seconden)*3600/1000)));
         return ((afstand/seconden)*3600/1000);
     }
 

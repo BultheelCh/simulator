@@ -1,3 +1,4 @@
+
 package be.kdg.processor.Configuration;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +26,11 @@ public class ApplicationConfiguration {
         //System.out.println(delay);
     }
 
+    @Autowired
+    public void configureObservers(){
+
+
+    }
 
 
 }

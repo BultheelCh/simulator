@@ -1,20 +1,21 @@
 package be.kdg.processor.model;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 
-//@Component
 @Entity
 @Table(name = "boete", schema = "CB")
 public class Boete {
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
-    //@Column(name="ID")
+    @Column(name="BoeteId")
     private int id;
     //@Column(name="nationaalNr",length=50, nullable = false)
     private String nationaalNr;
     private double bedrag;
     private String  overtredingsType;
     private String nummerplaat;
+    private LocalDate datum;
 
     public int getId() {
         return id;
@@ -46,14 +47,22 @@ public class Boete {
     public void setNummerplaats(String nummerplaats) {
         this.nummerplaat = nummerplaat;
     }
+    public LocalDate getDatum() {
+        return datum;
+    }
+    public void setDatum(LocalDate datum) {
+        this.datum = datum;
+    }
 
+    //gebruikt voor aanmaken database
     protected Boete(){}
 
-    public Boete(String nationaalNr, String nummerplaat, double bedrag, String overtredingsType){
+    public Boete(String nationaalNr, String nummerplaat, double bedrag, String overtredingsType, LocalDate datum){
         this.bedrag= bedrag;
         this.nationaalNr= nationaalNr;
         this.nummerplaat = nummerplaat;
         this.overtredingsType = overtredingsType;
+        this.datum = datum;
     }
 
     @Override
