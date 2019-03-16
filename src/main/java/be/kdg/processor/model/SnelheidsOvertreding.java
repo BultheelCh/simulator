@@ -84,7 +84,6 @@ public class SnelheidsOvertreding extends Overtreding {
         }
         return boete;
     }
-
     private Boete createNieuweBoete(CameraBericht camerabericht1, CameraBericht cameraBericht2, Camera connectedCamera){
         Voertuig voertuigInfo =  getVoertuigInfon(camerabericht1.getLicense());
         if (voertuigInfo==null){
@@ -103,7 +102,6 @@ public class SnelheidsOvertreding extends Overtreding {
 
         return new Boete(voertuigInfo.getNationalNumber(), voertuigInfo.getPlateId(),  boetebedrag, this.getClass().getSimpleName(),camerabericht1.getTimestamp().toLocalDateTime().toLocalDate());
     }
-
     private Camera getCamera(CameraBericht cameraBericht ){
         String cameraResult = proxyCameraService.get(cameraBericht.getId());
         Gson gson = new Gson();
@@ -114,19 +112,16 @@ public class SnelheidsOvertreding extends Overtreding {
         cameras.getCameraList().add(camera);
         return camera;
     }
-
     private double berekenSnelheid(double afstand, long seconden){
         //log.info(String.valueOf(((afstand/seconden)*3600/1000)));
         return ((afstand/seconden)*3600/1000);
     }
-
     private double berekenBedrag(double gemSnelheid, double maxSnelheid, double boetefactor){
         if (gemSnelheid < maxSnelheid){
             return 0;
         }
         return (gemSnelheid-maxSnelheid)*boetefactor;
     }
-
     private Voertuig getVoertuigInfon(String license){
         Voertuig voertuiginfo=null;
         String voertuigInfo = proxyLicenseService.get(license);

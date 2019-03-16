@@ -18,16 +18,4 @@ public class ProxyCameraService implements CameraService {
         }
         return null;
     }
-
-
-    /*private void ConvertResultCameraService(String result){
-       // JsonReader
-        //Json g = new Json( );
-        //Camera camera = fo g.fromJson(result, Camera.class);
-
-        //test
-
-
-    }*/
-
 }

@@ -19,18 +19,6 @@ import org.springframework.stereotype.Component;
     @Autowired
     BoeteRepository boeteRepository;
 
-    /*    @Override
-    public void berekenBoete(OvertredingsType overtredingsType) {
-//        Boete boete = processCameraBericht(overtredingsType);
-//        if (boete != null) {
-//            boeteRepository.save(boete);
-//        }
-    }
-
-    public Boete processCameraBericht(CameraBericht cameraBericht, OvertredingsType overtredingsType){
-
-    }*/
-
     @Override
     public void berekenBoete(CameraBericht cameraBericht, OvertredingsType overtredingsType) {
         //Bepaal overtreding

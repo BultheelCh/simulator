@@ -15,26 +15,23 @@ import org.springframework.stereotype.Component;
 @Component
 public class ConfigureRabbitMq {
 
-    @Autowired
-    RabbitMqProperties rabbitMqProperties;
+        @Autowired
+        RabbitMqProperties rabbitMqProperties;
 
-//Configuratie van RabbitMQ
-//1) aanmaken van een nieuwe exchange
+        //Configuratie van RabbitMQ
+        //1) aanmaken van een nieuwe exchange
         @Bean
         public TopicExchange cameraBerichtenExchange(){
-            //return new TopicExchange(EXCHANGE_NAME);
-            //System.out.println(rabbitMqProperties.getExchangeName());
             return new TopicExchange(rabbitMqProperties.getExchangeName());
         }
 
-//2) aanmaken van een queue
+        //2) aanmaken van een queue
         @Bean
         public Queue parsingQueue(){
-            //System.out.println(rabbitMqProperties.getQueueName());
             return new Queue(rabbitMqProperties.getQueueName());
         }
 
-//3) koppeling van de queue en de exchange
+        //3) koppeling van de queue en de exchange
         @Bean
         public Binding queueToExchangeBinding(){
             return BindingBuilder.bind(parsingQueue()).to(cameraBerichtenExchange()).with(rabbitMqProperties.getRoutingKey());

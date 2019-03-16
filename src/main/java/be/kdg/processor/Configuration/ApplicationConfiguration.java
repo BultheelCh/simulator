@@ -26,11 +26,6 @@ public class ApplicationConfiguration {
         //System.out.println(delay);
     }
 
-    @Autowired
-    public void configureObservers(){
-
-
-    }
 
 
 }

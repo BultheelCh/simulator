@@ -22,11 +22,6 @@ public class RabbitMQ  {
     Boetes boetes;
     @Autowired
     CameraBerichten cameraBerichten;
-//    @Autowired
-//    SnelheidsOvertreding snelheidsOvertreding;
-//    @Autowired
-//    BoeteRepository boeteRepository;
-
 
     @RabbitListener(queues = "queue_cameraberichten" )
     public void ReadCameraCamera(final CameraBericht cameraBericht){
@@ -35,11 +30,6 @@ public class RabbitMQ  {
             cameraBerichten.register(boetes);
             cameraBerichten.addCameraBericht(cameraBericht);
             cameraBerichten.unregister(boetes);
-//            Boete boete = cameraBericht.processCameraBericht(snelheidsOvertreding);
-//            if (boete != null) {
-//                boeteRepository.save(boete);
-//            }
-
 
         } catch (Exception e){
             e.printStackTrace();
