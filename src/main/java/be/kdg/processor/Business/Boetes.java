@@ -21,8 +21,6 @@ import java.util.List;
 
     @Override
     public void berekenBoete(CameraBericht cameraBericht, BoeteType boeteType) {
-        //Bepaal overtreding
-
         Boete boete = boeteType.berekeningBoete(cameraBericht);
         if (boete !=null){
             List<Boete> boetelijst = boeteRepository.findByNationaalNr(boete.getNationaalNr());
